@@ -1,0 +1,26 @@
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Theme {
+  id   Int    @id @default(autoincrement())
+  text String
+  todo Todo[]
+  @@map("theme")
+}
+
+model Todo {
+  id   Int    @id @default(autoincrement())
+  checked Boolean @default(false)
+  text String
+  theme Theme   @relation(fields: [themeId], references: [id] )
+  themeId Int
+  @@map("todos")
+}

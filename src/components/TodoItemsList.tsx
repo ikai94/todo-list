@@ -3,7 +3,9 @@ import { TodoItem } from './TodoItem.tsx';
 import { useParams } from 'react-router-dom';
 import { IState } from '../lib/store.tsx';
 import { useSelector } from 'react-redux';
-import { ITodoItems } from '../lib/data.ts';
+
+
+import { ITodoItems } from '../lib/types/types.ts';
 
 interface TodoItemsListProps {}
 

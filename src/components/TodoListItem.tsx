@@ -22,7 +22,7 @@ export const TodoListItem = memo((props: TodoListItemProps) => {
   return (
     <Link
       to={link}
-      className="flex items-center justify-between pl-[22px] pr-[14px] py-[14px] border-l-[#632329] border-l-[10px] w-full shadow-shadowList hover:scale-105 transition"
+      className="flex items-center justify-between pl-[22px] pr-[14px] py-[14px] border-l-[#632329] border-l-[10px] w-full shadow-shadowList hover:scale-[1.01] transition"
     >
       <p className="text-[18px] text-second-200">{title}</p>
       <div className="flex gap-4">

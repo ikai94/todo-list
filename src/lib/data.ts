@@ -1,14 +1,5 @@
-export interface ITodoList {
-  id: number;
-  text: string;
-}
 
-export interface ITodoItems {
-  id: number;
-  text: string;
-  themeId: number;
-  checkbox: boolean;
-}
+import { ITodoItems, ITodoList } from './types/types.ts';
 
 export const todoList: ITodoList[] = [
   {
