@@ -1,16 +1,15 @@
 import { memo, useEffect } from 'react';
-import { TodoListItem } from './TodoListItem.tsx';
-import { IState, useAppDispatch } from '../lib/store.tsx';
-import { TodoEmptyList } from './TodoEmptyList.tsx';
+import { ThemeListItem } from 'src/pages/theme/ui/ThemeListItem/ThemeListItem.tsx';
+import { IState, useAppDispatch } from 'src/shared/lib/store.tsx';
+import { ThemeEmptyList } from 'src/pages/theme/ui/ThemeEmptyList/ThemeEmptyList.tsx';
 import { useSelector } from 'react-redux';
-import { getTheme } from '../lib/actions/theme.ts';
+import { getTheme } from 'src/shared/lib/actions/theme.ts';
 
-interface TodoListProps {}
+interface ThemeContextProps {}
 
-export const TodoList = memo((props: TodoListProps) => {
+export const ThemeContext = memo((props: ThemeContextProps) => {
   const {} = props;
   const selectorTheme = (state: IState) => state.theme;
-  const isLoading = (state: IState) => state.isLoading
   const theme = useSelector(selectorTheme);
   const dispatch = useAppDispatch()
 
@@ -18,15 +17,11 @@ export const TodoList = memo((props: TodoListProps) => {
     dispatch(getTheme());
   }, [getTheme]);
 
-  if (isLoading) {
-    console.log(isLoading)
-  }
-
-  if (theme.length === 0) return <TodoEmptyList />;
+  if (theme.length === 0) return <ThemeEmptyList />;
   return (
     <div className="flex flex-col gap-[30px]">
       {theme.map((el) => (
-        <TodoListItem
+        <ThemeListItem
           key={el.id}
           title={el.text}
           link={`/todos/${el.id}`}

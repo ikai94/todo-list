@@ -1,9 +1,9 @@
 import { memo, useRef } from 'react';
-import { Icon } from '../ui';
-import PlusCircle from '../assets/icons/PlusCircle.svg';
-import { Modal } from '../ui/Modal.tsx';
+import { Icon } from '../shared/ui/Icon';
+import PlusCircle from '../shared/assets/icons/PlusCircle.svg';
+import { Modal } from '../shared/ui/Modal/Modal.tsx';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch } from '../lib/store.tsx';
+import { useAppDispatch } from '../shared/lib/store.tsx';
 
 interface TodoButtonItemsProps {}
 

@@ -1,12 +1,12 @@
 import { memo, useRef } from 'react';
-import { Icon } from '../ui';
-import PlusCircle from '../assets/icons/PlusCircle.svg';
-import { Modal } from '../ui/Modal.tsx';
-import { useAppDispatch } from '../lib/store.tsx';
+import { Icon } from '../../../../shared/ui/Icon';
+import PlusCircle from '../../../../shared/assets/icons/PlusCircle.svg';
+import { Modal } from 'src/shared/ui/Modal/Modal.tsx';
+import { useAppDispatch } from '../../../../shared/lib/store.tsx';
 
 interface TodoButtonListProps {}
 
-export const TodoButtonList = memo((props: TodoButtonListProps) => {
+export const ThemeListButton = memo((props: TodoButtonListProps) => {
   const {} = props;
   const refTest = useRef<null | any>();
   const dispatch = useAppDispatch();

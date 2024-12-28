@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { Icon } from '../ui';
-import Trash from '../assets/icons/Trash.svg';
-import { useAppDispatch } from '../lib/store.tsx';
+import { Icon } from '../shared/ui/Icon';
+import Trash from '../shared/assets/icons/Trash.svg';
+import { useAppDispatch } from '../shared/lib/store.tsx';
 
 interface TodoItemProps {
   title: string;

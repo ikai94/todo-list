@@ -1,10 +1,10 @@
 import { memo, useEffect } from 'react';
 import { TodoButtonItems } from './TodoButtonItems.tsx';
-import arrowLeft from '../assets/icons/arrow_left.svg';
-import { Icon } from '../ui';
+import arrowLeft from '../shared/assets/icons/arrow_left.svg';
+import { Icon } from '../shared/ui/Icon';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { IState, useAppDispatch } from '../lib/store.tsx';
+import { IState, useAppDispatch } from '../shared/lib/store.tsx';
 
 interface TodoHeaderItemsProps {}
 

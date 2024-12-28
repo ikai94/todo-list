@@ -1,9 +1,9 @@
-export { TodoList } from './TodoList';
-export { TodoHeaderList } from './TodoHeaderList';
-export { TodoThemeList } from './TodoThemeList';
-export { TodoButtonList } from './TodoButtonList';
-export { TodoListItem } from './TodoListItem';
-export { TodoEmptyList } from './TodoEmptyList';
+export { ThemeContext } from 'src/pages/theme/ui/ThemeContext/ThemeContext.tsx';
+export { ThemeHeaderList } from 'src/pages/theme/ui/ThemeHeaderList/ThemeHeaderList.tsx';
+export { ThemeList } from 'src/pages/theme/ui/ThemeList/ThemeList.tsx';
+export { ThemeListButton } from 'src/pages/theme/ui/ThemeListButton/ThemeListButton.tsx';
+export { ThemeListItem } from 'src/pages/theme/ui/ThemeListItem/ThemeListItem.tsx';
+export { ThemeEmptyList } from 'src/pages/theme/ui/ThemeEmptyList/ThemeEmptyList.tsx';
 export { TodoEmptyItems } from './TodoEmptyItems';
 export { TodoItem } from './TodoItem';
 export { TodoItems } from './TodoItems';

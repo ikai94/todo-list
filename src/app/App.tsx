@@ -1,9 +1,6 @@
-import {
-  TodoItems,
-  TodoItemsList,
-  TodoList,
-  TodoThemeList,
-} from './components';
+import { TodoItems, TodoItemsList } from '../components';
+import { ThemeList } from 'src/pages/theme';
+
 import { RouterProvider } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -11,15 +8,12 @@ function App() {
   const routes = createBrowserRouter([
     {
       path: '/',
-      element: <TodoThemeList />,
-      children: [
-        { index: true, element: <TodoList /> },
-      ],
+      element: <ThemeList />,
     },
     {
       path: '/todos/:id',
       element: <TodoItems />,
-      children: [{index: true, element: <TodoItemsList />}]
+      children: [{ index: true, element: <TodoItemsList /> }],
     },
   ]);
 

@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { Icon } from '../ui';
-import ArrowTodo from '../assets/icons/Arrow_todo.svg';
+import { Icon } from 'src/shared/ui/Icon';
+import ArrowTodo from '../../../../shared/assets/icons/Arrow_todo.svg';
 import { Link } from 'react-router-dom';
-import Trash from '../assets/icons/Trash.svg';
-import { useAppDispatch } from '../lib/store.tsx';
+import Trash from '../../../../shared/assets/icons/Trash.svg';
+import { useAppDispatch } from 'src/shared/lib/store.tsx';
 
 interface TodoListItemProps {
   title: string;
@@ -11,7 +11,7 @@ interface TodoListItemProps {
   id: number;
 }
 
-export const TodoListItem = memo((props: TodoListItemProps) => {
+export const ThemeListItem = memo((props: TodoListItemProps) => {
   const { title, link, id } = props;
   const dispatch = useAppDispatch();
 

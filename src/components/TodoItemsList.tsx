@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import { TodoItem } from './TodoItem.tsx';
 import { useParams } from 'react-router-dom';
-import { IState } from '../lib/store.tsx';
+import { IState } from '../shared/lib/store.tsx';
 import { useSelector } from 'react-redux';
 
 
-import { ITodoItems } from '../lib/types/types.ts';
+import { ITodoItems } from '../shared/lib/types/types.ts';
 
 interface TodoItemsListProps {}
 

@@ -15,10 +15,10 @@ export class ThemeService {
     return this.prisma.theme.findMany();
   }
 
-  deleteTheme(id:string) {
+  deleteTheme(id:number) {
     return this.prisma.theme.delete({
       where: {
-        id,
+        id: id,
       },
     });
   }

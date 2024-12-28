@@ -7,6 +7,12 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   { ignores: ['dist'] },
   {
+    overrides: [{
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        'no-undef': 'off',
+      }
+    }],
     extends: [
       js.configs.recommended,
       'prettier',

@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 interface TodoEmptyListProps {}
 
-export const TodoEmptyList = memo((props: TodoEmptyListProps) => {
+export const ThemeEmptyList = memo((props: TodoEmptyListProps) => {
   const {} = props;
 
   return (
