@@ -1,6 +1,6 @@
 import { PrismaClient, Theme } from '@prisma/client';
-import { ITheme, IThemeDelete } from './theme.types';
-
+import { ITheme } from './theme.types';
+import { TypeTodos } from '../todos/todos.types';
 
 export class ThemeService {
   private prisma = new PrismaClient();
@@ -11,14 +11,41 @@ export class ThemeService {
     });
   }
 
-  getTheme(): Promise<Theme[]> {
-    return this.prisma.theme.findMany();
+  getThemes(): Promise<Theme[]> {
+    return this.prisma.theme.findMany({
+      include: {
+        todo: true,
+      },
+    });
   }
 
-  deleteTheme(id:number) {
+  getTheme(themeId: number) {
+    return this.prisma.theme.findUnique({
+      include: {
+        todo: true,
+      },
+      where: {
+        id: themeId,
+      }
+    });
+  }
+
+  createTodos(todos: TypeTodos, id: number) {
+    return this.prisma.todo.create({
+      include: {
+        theme: true,
+      },
+      data: {
+        ...todos,
+        themeId: id,
+      }
+    })
+  }
+
+  deleteTheme(themeId: number) {
     return this.prisma.theme.delete({
       where: {
-        id: id,
+        id: themeId,
       },
     });
   }

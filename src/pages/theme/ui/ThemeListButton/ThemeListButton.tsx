@@ -1,28 +1,22 @@
-import { memo, useRef } from 'react';
+import { memo } from 'react';
 import { Icon } from '../../../../shared/ui/Icon';
 import PlusCircle from '../../../../shared/assets/icons/PlusCircle.svg';
 import { Modal } from 'src/shared/ui/Modal/Modal.tsx';
-import { useAppDispatch } from '../../../../shared/lib/store.tsx';
 
 interface TodoButtonListProps {}
 
 export const ThemeListButton = memo((props: TodoButtonListProps) => {
   const {} = props;
-  const refTest = useRef<null | any>();
-  const dispatch = useAppDispatch();
 
-  const returnCallback = (ref: any) => {
-    return (refTest.current = ref.current);
+  const returnCallback = () => {
+
   };
 
   const openModal = () => {
-    if (refTest.current) {
-      refTest.current?.showModal();
-    }
   };
 
-  const onAddTheme = (value: string) => {
-      dispatch({ type: 'addThemes', payload: value });
+  const onAddTheme = () => {
+
   };
 
   return (

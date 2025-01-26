@@ -21,6 +21,6 @@ model Todo {
   checked Boolean @default(false)
   text String
   theme Theme   @relation(fields: [themeId], references: [id] )
-  themeId Int
+  themeId Int @unique
   @@map("todos")
 }

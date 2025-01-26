@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import emptyItems from '../shared/assets/emptyItems.png';
+import emptyItems from '../../../../shared/assets/emptyItems.png';
 
 interface TodoEmptyItemsProps {}
 

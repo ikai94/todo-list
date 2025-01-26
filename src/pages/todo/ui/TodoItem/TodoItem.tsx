@@ -1,24 +1,21 @@
 import { memo } from 'react';
-import { Icon } from '../shared/ui/Icon';
-import Trash from '../shared/assets/icons/Trash.svg';
-import { useAppDispatch } from '../shared/lib/store.tsx';
+import { Icon } from '../../../../shared/ui/Icon';
+import Trash from '../../../../shared/assets/icons/Trash.svg';
+import { useAppDispatch } from 'src/app/providers/StoreProvider';
+import { todosActions } from 'src/pages/todo/model/slice/todosSlice.ts';
 
 interface TodoItemProps {
   title: string;
-  id: number;
+  todoId: number;
   checkbox: boolean;
 }
 
 export const TodoItem = memo((props: TodoItemProps) => {
-  const { title, id, checkbox } = props;
+  const { title, checkbox, todoId } = props;
   const dispatch = useAppDispatch();
 
-  const deleteTodo = () => {
-    dispatch({ type: 'deleteTodo', payload: id });
-  };
-
-  const onChecked = () => {
-    dispatch({ type: 'checkedTodo', payload: id });
+  const onChangeChecked = () => {
+    dispatch(todosActions.todoChecked({ todoId }));
   };
 
   return (
@@ -26,15 +23,15 @@ export const TodoItem = memo((props: TodoItemProps) => {
       <div className="flex">
         <div className="bg-gradient rounded w-[24px] h-[24px]">
           <input
+            onClick={onChangeChecked}
             type="checkbox"
             className="bg-dark-800 appearance-none inline-grid place-content-center w-[24px] h-[24px] border-2 border-transparent rounded bg-clip-padding after:checked:content-['✔️']"
-            onClick={onChecked}
             checked={checkbox}
           />
         </div>
         <p className="text-[18px] text-second-200 pl-[10px]">{title}</p>
       </div>
-      <button onClick={deleteTodo}>
+      <button>
         <Icon Svg={Trash} alt="delete list" height="24" width="24" />
       </button>
     </div>

@@ -1,3 +1,5 @@
+import { TypeTodos } from '../todos/todos.types';
+
 export interface ITheme {
   text: string;
 }

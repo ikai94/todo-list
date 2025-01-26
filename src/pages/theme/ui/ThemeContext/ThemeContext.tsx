@@ -1,32 +1,36 @@
 import { memo, useEffect } from 'react';
 import { ThemeListItem } from 'src/pages/theme/ui/ThemeListItem/ThemeListItem.tsx';
-import { IState, useAppDispatch } from 'src/shared/lib/store.tsx';
-import { ThemeEmptyList } from 'src/pages/theme/ui/ThemeEmptyList/ThemeEmptyList.tsx';
-import { useSelector } from 'react-redux';
-import { getTheme } from 'src/shared/lib/actions/theme.ts';
-
+import { themesSelectors } from 'src/pages/theme';
+import { ThemeEmptyList } from '../ThemeEmptyList/ThemeEmptyList';
+import { fetchThemes } from 'src/pages/theme/model/services/fetchThemes.ts';
+import { useAppDispatch, useAppSelector } from 'src/app/providers/StoreProvider';
 interface ThemeContextProps {}
 
 export const ThemeContext = memo((props: ThemeContextProps) => {
   const {} = props;
-  const selectorTheme = (state: IState) => state.theme;
-  const theme = useSelector(selectorTheme);
-  const dispatch = useAppDispatch()
+  const selectedTheme = useAppSelector(themesSelectors.selectorNameTheme);
+  const isLoading = useAppSelector(themesSelectors.selectorThemePending);
+  const isError = useAppSelector(themesSelectors.selectorThemeError);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getTheme());
-  }, [getTheme]);
+    dispatch(fetchThemes());
+  }, []);
+  if (selectedTheme.length == 0) return <ThemeEmptyList />;
 
-  if (theme.length === 0) return <ThemeEmptyList />;
+  if (isError) {
+    return (
+      <h1>Произошла ошибка при получении данных, повторите загрузку...</h1>
+    );
+  }
+
+  if (isLoading) {
+    return <div>...Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-[30px]">
-      {theme.map((el) => (
-        <ThemeListItem
-          key={el.id}
-          title={el.text}
-          link={`/todos/${el.id}`}
-          id={Number(el.id)}
-        />
+      {selectedTheme.map(({ text, id }) => (
+        <ThemeListItem key={id} title={text} link={`/todos/${id}`} id={id} />
       ))}
     </div>
   );
