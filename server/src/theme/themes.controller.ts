@@ -13,16 +13,6 @@ router.post('/themes', async (req: Request, res: Response) => {
   res.status(201).json(theme);
 });
 
-router.post('/themes/:id', async (req: Request, res: Response) => {
-  if (!req.body) {
-    res.status(400).json({ message: 'Нет темы!' });
-  }
-  const params = req.params;
-
-  const todos = await themeService.createTodos(req.body, Number(params.id));
-  res.status(201).json(todos);
-});
-
 router.get('/themes', async (req: Request, res: Response) => {
   const themes = await themeService.getThemes();
   res.json(themes);

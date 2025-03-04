@@ -3,25 +3,28 @@ import { RiCloseCircleLine } from 'react-icons/ri';
 
 interface ModalProps {
   onAddText: (value: string) => void;
-  callback: (ref: any) => typeof ref;
+  callbackForm: (ref: any) => void;
   title: string;
 }
 
 export const Modal = memo((props: ModalProps) => {
-  const { callback, onAddText, title } = props;
+  const { callbackForm, onAddText, title } = props;
   const [value, setValue] = useState<string>('');
-  const dialogRef = useRef<null | any>();
+  const dialogRef = useRef<any>(null);
 
   useEffect(() => {
-    callback(dialogRef);
-  }, [callback]);
+    if (callbackForm) {
+      callbackForm(dialogRef.current);
+    }
+  }, [callbackForm]);
+
 
   const onToggleClick = (e: any) => {
     setValue(e.target.value);
   };
 
   const closeModal = () => {
-    dialogRef?.current.close();
+      dialogRef.current.close();
   };
 
   return (

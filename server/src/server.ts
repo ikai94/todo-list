@@ -5,6 +5,7 @@ import * as process from 'node:process';
 import { PrismaClient } from '@prisma/client';
 import { themeRouter } from './theme/themes.controller';
 import { todosRouter } from './todos/todos.controller';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const prisma = new PrismaClient();
 async function main() {
   app.use(express.json());
   app.use(cors());
+  app.use(bodyParser.json())
   app.use('/', [themeRouter, todosRouter]);
 
   app.listen(port, () => {

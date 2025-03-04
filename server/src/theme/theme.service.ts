@@ -30,18 +30,6 @@ export class ThemeService {
     });
   }
 
-  createTodos(todos: TypeTodos, id: number) {
-    return this.prisma.todo.create({
-      include: {
-        theme: true,
-      },
-      data: {
-        ...todos,
-        themeId: id,
-      }
-    })
-  }
-
   deleteTheme(themeId: number) {
     return this.prisma.theme.delete({
       where: {

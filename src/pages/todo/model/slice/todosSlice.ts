@@ -1,15 +1,17 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TypeTheme, TypeTodosSchema } from '../types/todosTypes.ts';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TypeTodo, TypeTodosId, TypeTodosSchema } from '../types/todosTypes.ts';
+import { fetchTodos } from 'src/pages/todo/model/services/fetchTodos.ts';
 
 const initialState: TypeTodosSchema = {
-  todo: {
-    todo: [],
-    text: undefined,
-    id: undefined,
-  },
+  entities: {},
+  todosId: [],
+  selectTodosTheme: [],
   error: undefined,
+  addTodoError: undefined,
+  themeName: undefined,
   fetchTodoStatus: 'idle',
   fetchDeleteStatus: 'idle',
+  fetchAddTodoStatus: 'idle',
 };
 
 export const todosSlice = createSlice({
@@ -17,25 +19,18 @@ export const todosSlice = createSlice({
   initialState,
   selectors: {
     selectorIdle: (state) => state.fetchTodoStatus === 'idle',
-    selectorTodos: (state) => state.todo.todo,
-    selectorThemeName: (state) => state.todo.text,
+    selectorLoading: (state) => state.fetchTodoStatus === 'pending',
+    selectorTodos: createSelector(
+      (state: TypeTodosSchema) => state.entities,
+      (state: TypeTodosSchema) => state.todosId,
+      (entities, ids) =>
+        ids
+          .map((id) => entities[id])
+          .filter((todo): todo is TypeTodo => !!todo),
+    ),
+    selectorAddTodoStatus: (state) => state.fetchAddTodoStatus,
   },
   reducers: {
-    todoStorePending: (state: TypeTodosSchema) => {
-      state.fetchTodoStatus = 'pending';
-    },
-    todoStoreSuccess: (
-      state: TypeTodosSchema,
-      action: PayloadAction<{ theme: TypeTheme }>,
-    ) => {
-      state.todo = action.payload.theme;
-      state.fetchTodoStatus = 'success';
-      state.fetchTodoStatus = 'idle';
-    },
-    todoStoreError: (state: TypeTodosSchema, action: PayloadAction<string>) => {
-      state.error = action.payload;
-      state.fetchTodoStatus = 'failure';
-    },
     todoDeletePending: (state: TypeTodosSchema) => {
       state.fetchDeleteStatus = 'pending';
     },
@@ -43,23 +38,70 @@ export const todosSlice = createSlice({
       state: TypeTodosSchema,
       action: PayloadAction<{ todoId: number }>,
     ) => {
-      const id = action.payload.todoId;
+      const { todoId } = action.payload;
 
-      delete state.todo.todo[id];
+      delete state.entities[todoId];
+
+      state.todosId = state.todosId.filter((id) => id !== todoId);
       state.fetchDeleteStatus = 'success';
     },
     todoDeleteError: (state: TypeTodosSchema) => {
       state.fetchDeleteStatus = 'failure';
     },
-    todoChecked: (state: TypeTodosSchema, action: PayloadAction<{todoId: number}>) => {
-      const todoId = action.payload.todoId
-      state.todo.todo.filter((todo) => {
-        if (todo.id === todoId) {
-          return todo.checked = !todo.checked
-        }
-        return todo;
-      })
+    todoChecked: (
+      state: TypeTodosSchema,
+      action: PayloadAction<{ todoId: number }>,
+    ) => {
+      const todoId = action.payload.todoId;
+
+      let prevChecked = state.entities[todoId].checked;
+      state.entities[todoId].checked = !prevChecked;
     },
+    addTodoPending: (state: TypeTodosSchema) => {
+      state.fetchAddTodoStatus = 'pending';
+    },
+    addTodoSuccess: (
+      state: TypeTodosSchema,
+      action: PayloadAction<TypeTodo>,
+    ): TypeTodosSchema => {
+      const { id } = action.payload;
+      return {
+        ...state,
+        entities: {
+          ...state.entities,
+          [id]: action.payload,
+        },
+        fetchAddTodoStatus: 'success',
+      };
+    },
+    addTodoError: (state: TypeTodosSchema, action: PayloadAction<string>) => {
+      state.addTodoError = action.payload;
+      state.fetchAddTodoStatus = 'failure';
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTodos.pending, (state) => {
+        state.fetchTodoStatus = 'pending';
+      })
+      .addCase(
+        fetchTodos.fulfilled,
+        (state, action: PayloadAction<TypeTodo[]>) => {
+          const todo = action.payload;
+
+          state.entities = todo.reduce(
+            (acc, el) => {
+              acc[el.id] = el;
+              return acc;
+            },
+            {} as Record<TypeTodosId, TypeTodo>,
+          );
+          state.todosId = todo.map((el) => el.id);
+        },
+      )
+      .addCase(fetchTodos.rejected, (state) => {
+        state.fetchTodoStatus = 'failure';
+      });
   },
 });
 

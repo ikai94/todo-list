@@ -28,6 +28,7 @@ export function useModal({ animationDelay, isOpen, onClose }: UseModalProps) {
 
   // ReturnType возвращет тип который возвращает данная функция setTimeout
   // cделано при помощи данного хука, чтоб можно было осуществить очистку
+  // @ts-ignore
   const timerRef = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>;
 
   // если модальное окно будет открыто, то значение будет монтировано с true

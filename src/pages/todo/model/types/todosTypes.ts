@@ -5,15 +5,21 @@ export type TypeTodo = {
   themeId: number;
 };
 
-export type TypeTheme = {
-  id: number | undefined;
-  text: string | undefined;
-  todo: TypeTodo[];
-};
+export interface FetchDataArg {
+  refetch?: boolean;
+  themeId: number;
+}
+
+export type TypeTodosId = number;
 
 export type TypeTodosSchema = {
-  todo: TypeTheme;
+  entities: Record<TypeTodosId, TypeTodo>;
+  todosId: TypeTodosId[];
+  selectTodosTheme: TypeTodo[];
   error: string | undefined;
+  addTodoError: string | undefined;
+  themeName: string | undefined;
   fetchTodoStatus: 'idle' | 'pending' | 'success' | 'failure';
+  fetchAddTodoStatus: 'idle' | 'pending' | 'success' | 'failure';
   fetchDeleteStatus: 'idle' | 'pending' | 'success' | 'failure';
 };

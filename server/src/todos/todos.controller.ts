@@ -1,14 +1,18 @@
-import { Router } from 'express';
+import { json, Router } from 'express';
 import type { Request, Response } from 'express';
 import { TodosService } from './todos.service';
+import { Todo } from '@prisma/client';
+import { parser } from 'typescript-eslint';
+import bodyParser from 'body-parser';
 
 const router = Router();
 const todosService = new TodosService();
 
-router.post('/todos:id', async (req: Request, res: Response) => {
+router.post('/todos', async (req: Request, res: Response) => {
   if (!req.body) {
-    res.status(400).json({ message: 'Нет темы!' });
+    res.status(400).json({ message: 'данные не переданы' });
   }
+
   const todo = await todosService.createTodo(req.body);
   res.status(201).json(todo);
 });
@@ -18,15 +22,46 @@ router.get('/todos', async (req: Request, res: Response) => {
   res.json(todos);
 });
 
-router.delete('/todos:id', async (req: Request, res: Response) => {
-  const params: number = Number(req.body);
+router.get('/todos/:id', async (req: Request, res: Response) => {
+  const params = req.params;
 
-  if (!params) {
-    res.status(404).json({ message: 'не передал id!' });
+  const todosForTheme = await todosService.getTodosForTheme(Number(params.id));
+  res.json(todosForTheme);
+});
+
+router.get('/themes/theme/:id', async (req: Request, res: Response) => {
+  const params = req.params;
+  const todosThemeName = await todosService.getThemeName(Number(params.id));
+  res.json(todosThemeName);
+});
+
+router.get('/todos/todo/:id', async (req: Request, res: Response) => {
+  const params = req.params;
+
+  const themeTodos = await todosService.getThemeTodos(Number(params.id));
+  res.json(themeTodos);
+});
+
+router.delete('/todos/todo', async (req: Request, res: Response) => {
+  const { id } = req.body;
+
+  if (!id) {
+    res.status(404).json({ message: 'Не передан id задачи' });
   }
 
-  const result = await todosService.deleteTodo(params);
+  await todosService.deleteTodo(id);
 
+  res.status(200);
+});
+
+router.put('/todos', async (req: Request, res: Response) => {
+  const { checked, todoId }: { checked: boolean; todoId: number } = req.body;
+
+  if (!checked && !todoId) {
+    res.status(404).json({ message: 'Не передан флаг поля checkedd' });
+  }
+
+  const result = await todosService.updateChecked(todoId, checked);
   res.status(200).json(result);
 });
 

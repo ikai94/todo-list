@@ -2,20 +2,26 @@ import { memo } from 'react';
 import { Icon } from '../../../../shared/ui/Icon';
 import Trash from '../../../../shared/assets/icons/Trash.svg';
 import { useAppDispatch } from 'src/app/providers/StoreProvider';
-import { todosActions } from 'src/pages/todo/model/slice/todosSlice.ts';
+import { fetchDeleteTodo } from 'src/pages/todo/model/services/fetchDeleteTodo.ts';
+import { fetchCheckedTodo } from 'src/pages/todo/model/services/fetchCheckedTodo.ts';
 
 interface TodoItemProps {
   title: string;
   todoId: number;
   checkbox: boolean;
+  themeId: number;
 }
 
 export const TodoItem = memo((props: TodoItemProps) => {
-  const { title, checkbox, todoId } = props;
+  const { title, checkbox, todoId, themeId } = props;
   const dispatch = useAppDispatch();
 
   const onChangeChecked = () => {
-    dispatch(todosActions.todoChecked({ todoId }));
+    dispatch(fetchCheckedTodo(checkbox, todoId));
+  };
+
+  const deleteTodo = () => {
+    dispatch(fetchDeleteTodo(todoId, themeId));
   };
 
   return (
@@ -31,7 +37,7 @@ export const TodoItem = memo((props: TodoItemProps) => {
         </div>
         <p className="text-[18px] text-second-200 pl-[10px]">{title}</p>
       </div>
-      <button>
+      <button onClick={deleteTodo}>
         <Icon Svg={Trash} alt="delete list" height="24" width="24" />
       </button>
     </div>

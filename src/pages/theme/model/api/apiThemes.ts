@@ -7,6 +7,8 @@ const ThemeDtoSchema = z.object({
   text: z.string(),
 });
 
+const ThemeIdDto = z.number();
+
 export const apiThemes = {
   getThemes: async () => {
     return await fetch(`${baseUrl}/themes`)
@@ -15,9 +17,10 @@ export const apiThemes = {
         return ThemeDtoSchema.array().parse(res);
       });
   },
-  deleteTheme: async (themeId: string) => {
-    return await fetch(`${baseUrl}/themes/${themeId}`, {
+  deleteTheme: async (themeId: number) => {
+    return await fetch(`${baseUrl}/themes`, {
       method: 'DELETE',
-    }).then((res) => res.json());
+      body: JSON.stringify(ThemeIdDto.parse(themeId)),
+    });
   },
 };

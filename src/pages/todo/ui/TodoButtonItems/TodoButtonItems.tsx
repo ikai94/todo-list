@@ -16,7 +16,7 @@ export const TodoButtonItems = memo((props: TodoButtonItemsProps) => {
 
   };
 
-  const onAddTheme = () => {
+  const handleClickAddTodo = () => {
 
   };
 
@@ -25,7 +25,7 @@ export const TodoButtonItems = memo((props: TodoButtonItemsProps) => {
       <div className="flex gap-[24px]">
         <div className="flex items-center gap-[18px] py-[16px] px-[34px]">
           <Modal
-            onAddText={onAddTheme}
+            onAddText={handleClickAddTodo}
             callback={returnCallback}
             title={'заметки'}
           />
