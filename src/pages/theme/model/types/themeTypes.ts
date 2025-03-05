@@ -11,4 +11,5 @@ export type TypeThemesSchema = {
   selectedThemeId: TypeThemeId | undefined;
   error: string | undefined
   fetchThemeStatus: "idle" | "pending" | "success" | "failure";
+  createThemeStatus: "idle" | "pending" | "success" | "failure";
 }

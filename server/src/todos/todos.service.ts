@@ -48,14 +48,19 @@ export class TodosService {
     });
   }
 
-  updateChecked(todoId: number, checked: boolean) {
-    return this.prisma.todo.update({
-      where: {
-        id: todoId,
-      },
-      data: {
-        checked: checked,
-      },
-    });
+  async updateChecked(todoId: number, checked: boolean) {
+    try {
+      return await this.prisma.todo.update({
+        where: {
+          id: todoId,
+        },
+        data: {
+          checked: checked,
+        },
+      });
+    } catch (error) {
+      console.error('Ошибка при обновлении todo:', error);
+      throw new Error('Не удалось обновить запись');
+    }
   }
 }

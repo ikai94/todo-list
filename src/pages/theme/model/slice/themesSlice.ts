@@ -4,11 +4,13 @@ import {
   TypeThemeId,
   TypeThemesSchema,
 } from 'src/pages/theme/model/types/themeTypes.ts';
+import { fetchCreateTheme } from '../services/fetchCreateTheme';
 
 const initialState: TypeThemesSchema = {
   entities: {},
   ids: [],
   fetchThemeStatus: 'idle',
+  createThemeStatus: 'idle',
   selectedThemeId: undefined,
   error: undefined,
 };
@@ -21,7 +23,7 @@ export const themesSlice = createSlice({
     selectorThemeStatus: (state) => state.fetchThemeStatus,
     selectorThemeId: (state) => state.selectedThemeId,
     selectorThemeIdle: (state) => state.fetchThemeStatus === 'idle',
-    selectorThemePending: (state => state.fetchThemeStatus === 'pending'),
+    selectorThemePending: (state) => state.fetchThemeStatus === 'pending',
     selectorThemeError: (state) => state.fetchThemeStatus === 'failure',
     selectorNameTheme: createSelector(
       (state: TypeThemesSchema) => state.ids,
@@ -55,6 +57,27 @@ export const themesSlice = createSlice({
       state.fetchThemeStatus = 'failure';
       state.error = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCreateTheme.pending, (state) => {
+      state.fetchThemeStatus = 'pending';
+    });
+    builder.addCase(
+      fetchCreateTheme.fulfilled,
+      (state, action: PayloadAction<{ id: number, text: string }>) => {
+        const { id, text } = action.payload;
+        state.entities[id] = { id, text };
+        state.ids.push(id);
+        state.fetchThemeStatus = 'success';
+      },
+    );
+    builder.addCase(
+      fetchCreateTheme.rejected,
+      (state, action: PayloadAction<string | undefined>) => {
+        state.fetchThemeStatus = 'failure';
+        state.error = action.payload || 'Unknown error'; 
+      },
+    );
   },
 });
 

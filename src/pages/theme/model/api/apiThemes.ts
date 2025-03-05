@@ -10,6 +10,15 @@ const ThemeDtoSchema = z.object({
 const ThemeIdDto = z.number();
 
 export const apiThemes = {
+  createTheme: async (theme: string) => {
+    return await fetch(`${baseUrl}/themes`, {
+      method: 'POST',
+      body: JSON.stringify({ text: theme }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+  },
   getThemes: async () => {
     return await fetch(`${baseUrl}/themes`)
       .then((res) => res.json())

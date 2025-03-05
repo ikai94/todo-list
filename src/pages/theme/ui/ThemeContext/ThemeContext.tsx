@@ -15,7 +15,7 @@ export const ThemeContext = memo((props: ThemeContextProps) => {
 
   useEffect(() => {
     dispatch(fetchThemes());
-  }, []);
+  }, [dispatch]);
   if (selectedTheme.length == 0) return <ThemeEmptyList />;
 
   if (isError) {

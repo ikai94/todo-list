@@ -2,12 +2,15 @@ import { memo, useRef } from 'react';
 import { Icon } from 'src/shared/ui/Icon';
 import PlusCircle from '../../../../shared/assets/icons/PlusCircle.svg';
 import { Modal } from 'src/shared/ui/Modal/Modal.tsx';
+import { useAppDispatch } from 'src/app/providers/StoreProvider';
+import { fetchCreateTheme } from '../../model/services/fetchCreateTheme';
 
 interface TodoButtonListProps {}
 
 export const ThemeListButton = memo((props: TodoButtonListProps) => {
   const {} = props;
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const dispatch = useAppDispatch();
 
   const returnCallback = (ref:any) => {
     return dialogRef.current = ref;
@@ -20,8 +23,8 @@ export const ThemeListButton = memo((props: TodoButtonListProps) => {
     }
   };
 
-  const onAddTodo = () => {
-
+  const onAddTodo = (text:string) => {
+    dispatch(fetchCreateTheme({ theme: text }));
   };
 
   return (

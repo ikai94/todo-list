@@ -5,10 +5,14 @@ import { TypeTodos } from '../todos/todos.types';
 export class ThemeService {
   private prisma = new PrismaClient();
 
-  createTheme(themes: ITheme): Promise<Theme> {
-    return this.prisma.theme.create({
-      data: themes,
-    });
+  async createTheme(themes: ITheme): Promise<Theme> {
+    try {
+      return await this.prisma.theme.create({
+        data: themes,
+      });
+    } catch (error) {
+      throw new Error('Failed to create theme');
+    }
   }
 
   getThemes(): Promise<Theme[]> {
@@ -26,7 +30,7 @@ export class ThemeService {
       },
       where: {
         id: themeId,
-      }
+      },
     });
   }
 

@@ -1,6 +1,5 @@
 import { themesActions, themesSelectors } from 'src/pages/theme';
 
-
 import { AppThunk } from 'src/app/providers/StoreProvider/config/hooks.ts';
 
 export const fetchThemes =

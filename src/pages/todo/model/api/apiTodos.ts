@@ -12,22 +12,22 @@ const TodosDtoSchema = z.object({
 const TodoNameDto = z.string();
 
 export const apiTodos = {
-  getTheme: (themeId: number) => {
-    return fetch(`${baseUrl}/todos/${themeId}`)
+  getTheme: async (themeId: number) => {
+    return await fetch(`${baseUrl}/todos/${themeId}`)
       .then((res) => res.json())
       .then((data) => {
         return TodosDtoSchema.array().parse(data);
       });
   },
-  getTodos: () => {
-    return fetch(`${baseUrl}/todos`)
+  getTodos: async () => {
+    return await fetch(`${baseUrl}/todos`)
       .then((res) => res.json())
       .then((data) => {
         return TodosDtoSchema.array().parse(data);
       });
   },
-  getThemeName: (themeId: number) => {
-    return fetch(`${baseUrl}/themes/theme/${themeId}`)
+  getThemeName: async (themeId: number) => {
+    return await fetch(`${baseUrl}/themes/theme/${themeId}`)
       .then((res) => res.json())
       .then((data) => {
         return TodoNameDto.parse(data);
@@ -45,7 +45,7 @@ export const apiTodos = {
   checkedTodo: async (checked: boolean, todoId: number) => {
     return await fetch(`${baseUrl}/todos`, {
       method: 'PUT',
-      body: JSON.stringify({ checked: checked, id: todoId }),
+      body: JSON.stringify({ checked: checked, todoId: todoId }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },

@@ -19,7 +19,7 @@ export const Modal = memo((props: ModalProps) => {
   }, [callbackForm]);
 
 
-  const onToggleClick = (e: any) => {
+  const onToggleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
