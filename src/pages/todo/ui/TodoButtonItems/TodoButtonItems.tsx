@@ -1,23 +1,31 @@
-import {  memo } from 'react';
+import { memo, useRef } from 'react';
 import { Icon } from '../../../../shared/ui/Icon';
 import PlusCircle from '../../../../shared/assets/icons/PlusCircle.svg';
 import { Modal } from '../../../../shared/ui/Modal/Modal.tsx';
+import { useAppDispatch } from 'src/app/providers/StoreProvider/index.ts';
+import { fetchCreateTodo } from '../../model/services/fetchCreateTodo.ts';
+import { useParams } from 'react-router-dom';
 
 interface TodoButtonItemsProps {}
 
 export const TodoButtonItems = memo((props: TodoButtonItemsProps) => {
   const {} = props;
-
-  const returnCallback = () => {
-
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const dispatch = useAppDispatch();
+  const { id } = useParams<{ id: string }>();
+  const themeId = Number(id);
+  const returnCallback = (ref: any) => {
+    return (dialogRef.current = ref);
   };
 
   const openModal = () => {
-
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+    }
   };
 
-  const handleClickAddTodo = () => {
-
+  const handleClickAddTodo = (text: string) => {
+    dispatch(fetchCreateTodo({ text, themeId }));
   };
 
   return (
@@ -26,7 +34,7 @@ export const TodoButtonItems = memo((props: TodoButtonItemsProps) => {
         <div className="flex items-center gap-[18px] py-[16px] px-[34px]">
           <Modal
             onAddText={handleClickAddTodo}
-            callback={returnCallback}
+            callbackForm={returnCallback}
             title={'заметки'}
           />
           <button onClick={openModal}>

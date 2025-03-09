@@ -1,6 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TypeTodo, TypeTodosId, TypeTodosSchema } from '../types/todosTypes.ts';
 import { fetchTodos } from 'src/pages/todo/model/services/fetchTodos.ts';
+import { fetchCreateTodo } from '../services/fetchCreateTodo.ts';
+import { fetchNameTheme } from '../services/fetchNameTheme.ts';
 
 const initialState: TypeTodosSchema = {
   entities: {},
@@ -10,8 +12,10 @@ const initialState: TypeTodosSchema = {
   addTodoError: undefined,
   themeName: undefined,
   fetchTodoStatus: 'idle',
+  fetchCreateStatus: 'idle',
   fetchDeleteStatus: 'idle',
   fetchAddTodoStatus: 'idle',
+  fetchThemeNameStatus: 'idle',
 };
 
 export const todosSlice = createSlice({
@@ -29,6 +33,7 @@ export const todosSlice = createSlice({
           .filter((todo): todo is TypeTodo => !!todo),
     ),
     selectorAddTodoStatus: (state) => state.fetchAddTodoStatus,
+    selectorThemeName: (state) => state.themeName,
   },
   reducers: {
     todoDeletePending: (state: TypeTodosSchema) => {
@@ -102,6 +107,43 @@ export const todosSlice = createSlice({
       .addCase(fetchTodos.rejected, (state) => {
         state.fetchTodoStatus = 'failure';
       });
+    builder.addCase(fetchCreateTodo.pending, (state) => {
+      state.fetchCreateStatus = 'pending';
+    });
+    builder.addCase(
+      fetchCreateTodo.fulfilled,
+      (state, action: PayloadAction<TypeTodo>) => {
+        const { id } = action.payload;
+        state.entities[id] = action.payload;
+        state.todosId.push(id);
+        state.fetchCreateStatus = 'success';
+      },
+    );
+    builder.addCase(
+      fetchCreateTodo.rejected,
+      (state, action: PayloadAction<string | undefined>) => {
+        state.fetchCreateStatus = 'failure';
+        state.error = action.payload || 'Unknown error';
+      },
+    );
+    builder.addCase(fetchNameTheme.pending, (state) => {
+      state.fetchTodoStatus = 'pending';
+    });
+    builder.addCase(
+      fetchNameTheme.fulfilled,
+      (state, action: PayloadAction<{ text: string }>) => {
+        const { text } = action.payload;
+        state.themeName = text;
+        state.fetchThemeNameStatus = 'success';
+      },
+    );
+    builder.addCase(
+      fetchNameTheme.rejected,
+      (state, action: PayloadAction<string | undefined>) => {
+        state.fetchThemeNameStatus = 'failure';
+        state.error = action.payload || 'Unknown error';
+      },
+    );
   },
 });
 

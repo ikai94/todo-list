@@ -8,6 +8,7 @@ import {
 } from 'src/pages/todo/model/slice/todosSlice.ts';
 import { themesSlice } from 'src/pages/theme/model/slice/themesSlice';
 import logger from 'redux-logger';
+import { baseApi } from 'src/shared/api/baseApi';
 
 export const extraArgument = {
   apiThemes: apiThemes,
@@ -18,6 +19,7 @@ export const store = configureStore({
   reducer: combineReducers({
     [themesSlice.name]: themesReducer,
     [todosSlice.name]: todosReducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   }),
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
@@ -25,5 +27,5 @@ export const store = configureStore({
       thunk: {
         extraArgument: extraArgument,
       },
-    }).concat(logger),
+    }),
 });

@@ -3,7 +3,8 @@ import { Icon } from 'src/shared/ui/Icon';
 import ArrowTodo from 'src/shared/assets/icons/Arrow_todo.svg';
 import { Link } from 'react-router-dom';
 import Trash from 'src/shared/assets/icons/Trash.svg';
-
+import { useAppDispatch } from 'src/app/providers/StoreProvider';
+import { fetchDeleteTheme } from '../../model/services/fetchDeleteTheme';
 
 interface TodoListItemProps {
   title: string;
@@ -12,12 +13,13 @@ interface TodoListItemProps {
 }
 
 export const ThemeListItem = memo((props: TodoListItemProps) => {
-  const { title, link} = props;
+  const { title, link, id } = props;
+  const dispatch = useAppDispatch();
 
   const deleteTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    dispatch(fetchDeleteTheme({ id: id }));
   };
-
 
   return (
     <Link

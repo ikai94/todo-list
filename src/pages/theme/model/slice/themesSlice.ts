@@ -5,6 +5,7 @@ import {
   TypeThemesSchema,
 } from 'src/pages/theme/model/types/themeTypes.ts';
 import { fetchCreateTheme } from '../services/fetchCreateTheme';
+import { fetchDeleteTheme } from '../services/fetchDeleteTheme';
 
 const initialState: TypeThemesSchema = {
   entities: {},
@@ -77,6 +78,22 @@ export const themesSlice = createSlice({
         state.fetchThemeStatus = 'failure';
         state.error = action.payload || 'Unknown error'; 
       },
+    );
+    builder.addCase(fetchDeleteTheme.pending, (state) => {
+      state.fetchThemeStatus = 'pending';
+    }
+    );
+    builder.addCase(fetchDeleteTheme.fulfilled, (state, action: PayloadAction<{id: number}>) => {
+      const { id } = action.payload;
+      delete state.entities[id];
+      state.ids = state.ids.filter((themeId) => themeId !== id);
+      state.fetchThemeStatus = 'success';
+    }
+    );
+    builder.addCase(fetchDeleteTheme.rejected, (state, action: PayloadAction<string | undefined>) => {
+      state.fetchThemeStatus = 'failure';
+      state.error = action.payload || 'Unknown error';
+    }
     );
   },
 });

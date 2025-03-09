@@ -20,6 +20,8 @@ export type TypeTodosSchema = {
   addTodoError: string | undefined;
   themeName: string | undefined;
   fetchTodoStatus: 'idle' | 'pending' | 'success' | 'failure';
+  fetchCreateStatus: 'idle' | 'pending' | 'success' | 'failure';
   fetchAddTodoStatus: 'idle' | 'pending' | 'success' | 'failure';
   fetchDeleteStatus: 'idle' | 'pending' | 'success' | 'failure';
+  fetchThemeNameStatus: 'idle' | 'pending' | 'success' | 'failure';
 };

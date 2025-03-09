@@ -14,7 +14,6 @@ export const ThemeListButton = memo((props: TodoButtonListProps) => {
 
   const returnCallback = (ref:any) => {
     return dialogRef.current = ref;
-    console.log('Ссылка на элемент:', dialogRef.current);
   };
 
   const openModal = () => {

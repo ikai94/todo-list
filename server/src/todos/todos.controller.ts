@@ -30,9 +30,24 @@ router.get('/todos/:id', async (req: Request, res: Response) => {
 });
 
 router.get('/themes/theme/:id', async (req: Request, res: Response) => {
-  const params = req.params;
-  const todosThemeName = await todosService.getThemeName(Number(params.id));
-  res.json(todosThemeName);
+  const themeId = Number(req.params.id);
+
+  if (isNaN(themeId)) {
+    res.status(400).json({ error: 'Некорректный ID' });
+  }
+
+  try {
+    const themeName = await todosService.getThemeName(themeId);
+
+    if (!themeName) {
+      res.status(404).json({ error: 'Тема не найдена' });
+    }
+
+    res.json(themeName);
+  } catch (error) {
+    console.error('Ошибка при получении темы:', error);
+    res.status(500).json({ error: 'Ошибка сервера' });
+  }
 });
 
 router.get('/todos/todo/:id', async (req: Request, res: Response) => {

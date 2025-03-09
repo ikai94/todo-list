@@ -25,13 +25,9 @@ router.get('/themes/:id', async (req: Request, res: Response) => {
 });
 
 router.delete('/themes/:id', async (req: Request, res: Response) => {
-  const params: number = Number(req.body);
+  const params = req.params;
 
-  if (!params) {
-    res.status(404).json({ message: 'не передал id!' });
-  }
-
-  const result = await themeService.deleteTheme(params);
+  const result = await themeService.deleteTheme(Number(params.id));
 
   res.status(200).json(result);
 });

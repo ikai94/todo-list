@@ -34,10 +34,15 @@ export class ThemeService {
     });
   }
 
-  deleteTheme(themeId: number) {
-    return this.prisma.theme.delete({
+  async deleteTheme(id: number): Promise<Theme> {
+    
+    await this.prisma.todo.deleteMany({
+      where: { themeId: id }, // Удаляем все todo с этой темой
+    });
+
+    return await this.prisma.theme.delete({
       where: {
-        id: themeId,
+        id: id,
       },
     });
   }

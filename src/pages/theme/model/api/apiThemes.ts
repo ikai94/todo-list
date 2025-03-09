@@ -27,9 +27,8 @@ export const apiThemes = {
       });
   },
   deleteTheme: async (themeId: number) => {
-    return await fetch(`${baseUrl}/themes`, {
+    return await fetch(`${baseUrl}/themes/${themeId}`, {
       method: 'DELETE',
-      body: JSON.stringify(ThemeIdDto.parse(themeId)),
     });
   },
 };

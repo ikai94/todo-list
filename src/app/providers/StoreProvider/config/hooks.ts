@@ -8,7 +8,6 @@ import { UnknownAction } from 'redux';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export type AppStore = typeof store;
-export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export type AppState = ReturnType<typeof store.getState>;
 export type AppThunk<R = void> = ThunkAction<
@@ -18,11 +17,11 @@ export type AppThunk<R = void> = ThunkAction<
   UnknownAction
 >;
 export type ThunkApiConfig = {
-  state: RootState;
+  state: AppState;
   dispatch: AppDispatch;
   extra: typeof extraArgument;
 };
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppStore = useStore.withTypes<typeof store>();
-export const useAppSelector = useSelector.withTypes<RootState>();
+export const useAppSelector = useSelector.withTypes<AppState>();
 export const createAppAsyncThunk = createAsyncThunk.withTypes<ThunkApiConfig>();

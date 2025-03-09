@@ -1,15 +1,14 @@
-import { todosActions} from 'src/pages/todo/model/slice/todosSlice.ts';
+import { createAppAsyncThunk } from 'src/app/providers/StoreProvider/config/hooks.ts';
+import { TypeTodo } from '../types/todosTypes';
 
-import { AppThunk } from 'src/app/providers/StoreProvider/config/hooks.ts';
-
-export const fetchCreateTodo =
-  ( text: string): AppThunk<Promise<void>> =>
-    async (dispatch, _, { apiTodos }) => {
-
-      try {
-        dispatch(todosActions.todoChecked({ todoId }));
-        await apiTodos.checkedTodo(checked,todoId)
-      } catch (e) {
-        dispatch(todosActions.todoDeleteError());
-      }
-    };
+export const fetchCreateTodo = createAppAsyncThunk<
+  TypeTodo,
+  { text: string; themeId: number },
+  { rejectValue: string }
+>('todo/fetchCreateTodo', async ({ text, themeId }, ThunkApi) => {
+  try {
+    return (await ThunkApi.extra.apiTodos.createTodo(text, themeId)).json();
+  } catch (error) {
+    return ThunkApi.rejectWithValue('Произоша ошибка');
+  }
+});

@@ -9,9 +9,18 @@ const TodosDtoSchema = z.object({
   themeId: z.number(),
 });
 
-const TodoNameDto = z.string();
+const TodoNameDto = z.object({ text: z.string() });
 
 export const apiTodos = {
+  createTodo: async (text: string, themeId: number) => {
+    return await fetch(`${baseUrl}/todos`, {
+      method: 'POST',
+      body: JSON.stringify({ text, themeId }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+  },
   getTheme: async (themeId: number) => {
     return await fetch(`${baseUrl}/todos/${themeId}`)
       .then((res) => res.json())
@@ -20,18 +29,23 @@ export const apiTodos = {
       });
   },
   getTodos: async () => {
-    return await fetch(`${baseUrl}/todos`)
+    return fetch(`${baseUrl}/todos`)
       .then((res) => res.json())
       .then((data) => {
         return TodosDtoSchema.array().parse(data);
       });
   },
   getThemeName: async (themeId: number) => {
-    return await fetch(`${baseUrl}/themes/theme/${themeId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        return TodoNameDto.parse(data);
-      });
+    try {
+      const response = await fetch(`${baseUrl}/themes/theme/${themeId}`);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`Ошибка API:${baseUrl}/themes/theme/${themeId}`);
+      }
+      return TodoNameDto.parse(data);
+    } catch (error) {
+      console.error('Ошибка при получении темы:', error);
+    }
   },
   deleteTodo: async (todoId: number) => {
     return await fetch(`${baseUrl}/todos/todo`, {

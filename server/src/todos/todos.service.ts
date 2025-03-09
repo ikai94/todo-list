@@ -1,10 +1,11 @@
-import { PrismaClient, Todo } from '@prisma/client';
+import { PrismaClient, Theme, Todo } from '@prisma/client';
+import { TypeTodos } from './todos.types';
 
 export class TodosService {
   private prisma = new PrismaClient();
 
-  createTodo(todo: Todo): Promise<Todo> {
-    return this.prisma.todo.create({
+  async createTodo(todo: TypeTodos): Promise<Todo> {
+    return await this.prisma.todo.create({
       data: todo,
     });
   }
@@ -29,16 +30,12 @@ export class TodosService {
     });
   }
 
-  getThemeName(themeId: number) {
-    return this.prisma.theme.findFirst({
-      where: {
-        id: themeId,
-      },
-      select: {
-        text: true,
-      },
+  async getThemeName(themeId: number): Promise<{ text: string } | null> {
+    return await this.prisma.theme.findUnique({
+      where: { id: themeId },
+      select: { text: true },
     });
-  }
+  } 
 
   deleteTodo(todoId: number) {
     return this.prisma.todo.delete({
