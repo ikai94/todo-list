@@ -7,7 +7,6 @@ import {
   todosSlice,
 } from 'src/pages/todo/model/slice/todosSlice.ts';
 import { themesSlice } from 'src/pages/theme/model/slice/themesSlice';
-import logger from 'redux-logger';
 import { baseApi } from 'src/shared/api/baseApi';
 
 export const extraArgument = {
@@ -27,5 +26,5 @@ export const store = configureStore({
       thunk: {
         extraArgument: extraArgument,
       },
-    }),
+    }).concat(baseApi.middleware),
 });

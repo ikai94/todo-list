@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Trash from 'src/shared/assets/icons/Trash.svg';
 import { useAppDispatch } from 'src/app/providers/StoreProvider';
 import { fetchDeleteTheme } from '../../model/services/fetchDeleteTheme';
+import { apiThemes } from '../../model/api/apiThemes';
 
 interface TodoListItemProps {
   title: string;
@@ -14,11 +15,12 @@ interface TodoListItemProps {
 
 export const ThemeListItem = memo((props: TodoListItemProps) => {
   const { title, link, id } = props;
-  const dispatch = useAppDispatch();
 
-  const deleteTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [deleteTheme, { isLoading }] = apiThemes.useDeleteThemeMutation();
+
+  const clickDeleteTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(fetchDeleteTheme({ id: id }));
+    deleteTheme(id);
   };
 
   return (
@@ -28,7 +30,7 @@ export const ThemeListItem = memo((props: TodoListItemProps) => {
     >
       <p className="text-[18px] text-second-200">{title}</p>
       <div className="flex gap-4">
-        <button onClick={deleteTheme}>
+        <button onClick={clickDeleteTheme}>
           <Icon Svg={Trash} alt="delete list" height="24" width="24" />
         </button>
         <Icon Svg={ArrowTodo} alt={title} height={32} width={32} />

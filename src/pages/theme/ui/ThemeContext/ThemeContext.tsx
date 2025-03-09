@@ -3,20 +3,23 @@ import { ThemeListItem } from 'src/pages/theme/ui/ThemeListItem/ThemeListItem.ts
 import { themesSelectors } from 'src/pages/theme';
 import { ThemeEmptyList } from '../ThemeEmptyList/ThemeEmptyList';
 import { fetchThemes } from 'src/pages/theme/model/services/fetchThemes.ts';
-import { useAppDispatch, useAppSelector } from 'src/app/providers/StoreProvider';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from 'src/app/providers/StoreProvider';
+import { apiThemes } from '../../model/api/apiThemes';
 interface ThemeContextProps {}
 
 export const ThemeContext = memo((props: ThemeContextProps) => {
   const {} = props;
-  const selectedTheme = useAppSelector(themesSelectors.selectorNameTheme);
-  const isLoading = useAppSelector(themesSelectors.selectorThemePending);
-  const isError = useAppSelector(themesSelectors.selectorThemeError);
-  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchThemes());
-  }, [dispatch]);
-  if (selectedTheme.length == 0) return <ThemeEmptyList />;
+  const {
+    data: selectedTheme,
+    isError,
+    isLoading,
+  } = apiThemes.useGetThemesQuery();
+
+  if (selectedTheme?.length == 0) return <ThemeEmptyList />;
 
   if (isError) {
     return (
@@ -29,7 +32,7 @@ export const ThemeContext = memo((props: ThemeContextProps) => {
   }
   return (
     <div className="flex flex-col gap-[30px]">
-      {selectedTheme.map(({ text, id }) => (
+      {selectedTheme?.map(({ text, id }) => (
         <ThemeListItem key={id} title={text} link={`/todos/${id}`} id={id} />
       ))}
     </div>
