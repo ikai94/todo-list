@@ -1,9 +1,7 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Icon } from '../../../../shared/ui/Icon';
 import Trash from '../../../../shared/assets/icons/Trash.svg';
-import { useAppDispatch } from 'src/app/providers/StoreProvider';
-import { fetchDeleteTodo } from 'src/pages/todo/model/services/fetchDeleteTodo.ts';
-import { fetchCheckedTodo } from 'src/pages/todo/model/services/fetchCheckedTodo.ts';
+import { apiTodos } from '../../model/api/apiTodos';
 
 interface TodoItemProps {
   title: string;
@@ -13,15 +11,19 @@ interface TodoItemProps {
 }
 
 export const TodoItem = memo((props: TodoItemProps) => {
-  const { title, checkbox, todoId, themeId } = props;
-  const dispatch = useAppDispatch();
+  const { title, checkbox, todoId } = props;
+  const [isChecked, setIsChecked] = useState(checkbox);
 
-  const onChangeChecked = () => {
-    dispatch(fetchCheckedTodo(checkbox, todoId));
+  const [checkedTodo] = apiTodos.useCheckedTodoMutation();
+  const [deleteTodo] = apiTodos.useDeleteTodoMutation();
+
+  const onChangeChecked = async () => {
+    setIsChecked(!isChecked);
+    await checkedTodo({ checked: !checkbox, todoId });
   };
 
-  const deleteTodo = () => {
-    dispatch(fetchDeleteTodo(todoId, themeId));
+  const onClickDeleteTodo = async() => {
+    await deleteTodo(todoId);
   };
 
   return (
@@ -37,7 +39,7 @@ export const TodoItem = memo((props: TodoItemProps) => {
         </div>
         <p className="text-[18px] text-second-200 pl-[10px]">{title}</p>
       </div>
-      <button onClick={deleteTodo}>
+      <button onClick={onClickDeleteTodo}>
         <Icon Svg={Trash} alt="delete list" height="24" width="24" />
       </button>
     </div>

@@ -72,7 +72,7 @@ router.delete('/todos/todo', async (req: Request, res: Response) => {
 router.put('/todos', async (req: Request, res: Response) => {
   const { checked, todoId }: { checked: boolean; todoId: number } = req.body;
 
-  if (!checked && !todoId) {
+  if (typeof checked !== 'boolean' || !todoId) {
     res.status(404).json({ message: 'Не передан флаг поля checkedd' });
   }
 

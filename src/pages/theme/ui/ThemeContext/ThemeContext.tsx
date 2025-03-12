@@ -1,12 +1,6 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { ThemeListItem } from 'src/pages/theme/ui/ThemeListItem/ThemeListItem.tsx';
-import { themesSelectors } from 'src/pages/theme';
 import { ThemeEmptyList } from '../ThemeEmptyList/ThemeEmptyList';
-import { fetchThemes } from 'src/pages/theme/model/services/fetchThemes.ts';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from 'src/app/providers/StoreProvider';
 import { apiThemes } from '../../model/api/apiThemes';
 interface ThemeContextProps {}
 

@@ -35,10 +35,10 @@ export class TodosService {
       where: { id: themeId },
       select: { text: true },
     });
-  } 
+  }
 
-  deleteTodo(todoId: number) {
-    return this.prisma.todo.delete({
+  async deleteTodo(todoId: number) {
+    await this.prisma.todo.delete({
       where: {
         id: todoId,
       },

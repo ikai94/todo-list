@@ -9,13 +9,19 @@ import {
   useAppSelector,
 } from 'src/app/providers/StoreProvider/index.ts';
 import { fetchNameTheme } from '../../model/services/fetchNameTheme.ts';
+import { apiTodos } from '../../model/api/apiTodos.ts';
 
 interface TodoHeaderItemsProps {}
 
 export const TodoHeaderItems = memo((props: TodoHeaderItemsProps) => {
   const {} = props;
+  const { id } = useParams<{ id: string }>();
+  const themeId = Number(id);
+  const { data: themeName, isLoading } = apiTodos.useGetThemeNameQuery(themeId);
 
-  const themeName = useAppSelector(todosSelectors.selectorThemeName);
+  if (isLoading) {
+    <div>....</div>;
+  }
 
   return (
     <div className="mb-[50px]">
@@ -25,7 +31,7 @@ export const TodoHeaderItems = memo((props: TodoHeaderItemsProps) => {
             <Icon Svg={arrowLeft} alt={'arrowLeft'} height={36} width={36} />
           </Link>
           <div className="text-[24px] text-second-200 font-semibold">
-            {themeName}
+            {themeName?.text}
           </div>
         </div>
         <TodoButtonItems />
